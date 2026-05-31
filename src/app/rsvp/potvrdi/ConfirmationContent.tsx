@@ -2,9 +2,19 @@
 
 import { useSearchParams } from "next/navigation";
 
+const ARRIVAL_LABELS: Record<string, string> = {
+  friday: "Pátek s ubytováním (od 9. 10. 2026)",
+  saturday: "Sobota na obřad (10. 10. 2026)",
+};
+
 export default function ConfirmationContent() {
   const params = useSearchParams();
   const attending = params.get("attending") === "true";
+  const arrival = params.get("arrival") ?? "";
+  const namesParam = params.get("names") ?? "";
+  const names = namesParam
+    ? namesParam.split(",").map((n) => decodeURIComponent(n))
+    : [];
 
   return (
     <div
@@ -25,6 +35,34 @@ export default function ConfirmationContent() {
             : "Mrzí nás, že se nemůžete zúčastnit. Děkujeme, že jste nám dali vědět."}
         </p>
 
+        {attending && (names.length > 0 || arrival) && (
+          <div
+            className="mt-6 pt-6 border-t text-left text-sm space-y-3"
+            style={{ borderColor: "var(--gold-light)" }}
+          >
+            {names.length > 0 && (
+              <div>
+                <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
+                  Účastníci
+                </p>
+                <ul className="space-y-1" style={{ color: "#444" }}>
+                  {names.map((name) => (
+                    <li key={name}>• {name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {arrival && ARRIVAL_LABELS[arrival] && (
+              <div>
+                <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
+                  Termín příjezdu
+                </p>
+                <p style={{ color: "#444" }}>{ARRIVAL_LABELS[arrival]}</p>
+              </div>
+            )}
+          </div>
+        )}
+
         <div
           className="mt-6 pt-6 border-t text-sm"
           style={{ borderColor: "var(--gold-light)", color: "#888" }}
@@ -32,11 +70,7 @@ export default function ConfirmationContent() {
           <p>Marta & Jakub — 10. 10. 2026</p>
         </div>
       </div>
-      <a
-        href="/"
-        className="mt-6 text-sm"
-        style={{ color: "var(--gold)" }}
-      >
+      <a href="/" className="mt-6 text-sm" style={{ color: "var(--gold)" }}>
         ← Zpět na hlavní stránku
       </a>
     </div>
