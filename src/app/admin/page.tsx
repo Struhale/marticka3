@@ -1,16 +1,29 @@
-export default function AdminPage() {
+import { RSVPStore } from "@/lib/rsvp-store";
+import {
+  getAttendanceSummary,
+  getPeopleWithAllergies,
+  getAccommodationGroups,
+  getSongEntries,
+} from "@/lib/rsvp-aggregations";
+import AdminDashboardClient from "./AdminDashboardClient";
+
+export const dynamic = "force-dynamic";
+
+export default async function AdminPage() {
+  const submissions = await RSVPStore.listSubmissions();
+
+  const attendance = getAttendanceSummary(submissions);
+  const allergies = getPeopleWithAllergies(submissions);
+  const accommodation = getAccommodationGroups(submissions);
+  const songs = getSongEntries(submissions);
+
   return (
-    <div
-      className="min-h-screen p-8"
-      style={{ backgroundColor: "var(--cream)" }}
-    >
-      <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--dark)" }}>
-        Admin dashboard
-      </h1>
-      <p className="text-sm mb-8" style={{ color: "#888" }}>
-        Přehled odpovědí hostů
-      </p>
-      <p style={{ color: "#666" }}>Dashboard bude k dispozici brzy.</p>
-    </div>
+    <AdminDashboardClient
+      submissions={submissions}
+      attendance={attendance}
+      allergies={allergies}
+      accommodation={accommodation}
+      songs={songs}
+    />
   );
 }
