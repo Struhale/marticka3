@@ -45,7 +45,7 @@ export default function RSVPPage() {
       <h1 className="text-3xl font-bold text-center mb-2" style={{ color: "var(--dark)" }}>
         Marta & Jakub
       </h1>
-      <p className="text-center mb-8" style={{ color: "var(--gold)" }}>
+      <p className="text-center mb-8" style={{ color: "var(--green)" }}>
         10. října 2026 — Potvrzení účasti
       </p>
       <p className="text-center mb-8" style={{ color: "#444" }}>
@@ -59,7 +59,7 @@ export default function RSVPPage() {
           onClick={() => setStep("attending-form")}
           disabled={submitting}
           className="px-8 py-4 rounded font-semibold text-lg text-white transition-opacity disabled:opacity-50"
-          style={{ backgroundColor: "var(--gold)" }}
+          style={{ backgroundColor: "var(--green)" }}
         >
           Přijdu 🎉
         </button>
@@ -67,7 +67,7 @@ export default function RSVPPage() {
           onClick={handleNotAttending}
           disabled={submitting}
           className="px-8 py-4 rounded font-semibold text-lg border-2 transition-opacity disabled:opacity-50"
-          style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
+          style={{ borderColor: "var(--green)", color: "var(--green)" }}
         >
           {submitting ? "Odesílám..." : "Nepřijdu"}
         </button>
@@ -100,7 +100,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
   }
 
   function removePerson(index: number) {
-    if (index === 0) return; // submitter cannot be removed
+    if (index === 0) return;
     setPeople((prev) => prev.filter((_, i) => i !== index));
   }
 
@@ -155,7 +155,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
       <button
         onClick={onBack}
         className="text-sm mb-6 flex items-center gap-1"
-        style={{ color: "var(--gold)" }}
+        style={{ color: "var(--green)" }}
       >
         ← Zpět
       </button>
@@ -164,38 +164,40 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* People table */}
+        {/* People — card per person */}
         <div>
           <label className="block text-sm font-semibold mb-3" style={{ color: "var(--dark)" }}>
-            Účastníci
+            Vaše jméno:
           </label>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {people.map((person, i) => (
-              <div key={i} className="flex gap-2 items-start">
-                <div className="flex-1 space-y-2">
-                  <input
-                    type="text"
-                    placeholder={i === 0 ? "Vaše jméno (povinné)" : "Jméno (nepovinné)"}
-                    value={person.name}
-                    onChange={(e) => updatePerson(i, "name", e.target.value)}
-                    required={i === 0}
-                    className="w-full border rounded px-3 py-2 text-sm focus:outline-none"
-                    style={{ borderColor: "var(--gold-light)" }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Alergie / intolerance (nepovinné)"
-                    value={person.allergies}
-                    onChange={(e) => updatePerson(i, "allergies", e.target.value)}
-                    className="w-full border rounded px-3 py-2 text-sm focus:outline-none"
-                    style={{ borderColor: "var(--gold-light)" }}
-                  />
-                </div>
+              <div
+                key={i}
+                className="rounded-lg border p-4 relative"
+                style={{ borderColor: "var(--green-light)", backgroundColor: "var(--green-pale)" }}
+              >
+                <input
+                  type="text"
+                  placeholder={i === 0 ? "Vaše jméno (povinné)" : "Jméno (nepovinné)"}
+                  value={person.name}
+                  onChange={(e) => updatePerson(i, "name", e.target.value)}
+                  required={i === 0}
+                  className="w-full border rounded px-3 py-2 text-sm focus:outline-none bg-white mb-3"
+                  style={{ borderColor: "var(--green-light)" }}
+                />
+                <textarea
+                  placeholder="napište nám, co nejíte, na co máte alergii/intoleranci"
+                  value={person.allergies}
+                  onChange={(e) => updatePerson(i, "allergies", e.target.value)}
+                  rows={2}
+                  className="w-full border rounded px-3 py-2 text-sm focus:outline-none resize-none bg-white"
+                  style={{ borderColor: "var(--green-light)" }}
+                />
                 {i > 0 && (
                   <button
                     type="button"
                     onClick={() => removePerson(i)}
-                    className="mt-1 text-sm text-red-400 hover:text-red-600"
+                    className="absolute top-3 right-3 text-sm text-red-400 hover:text-red-600"
                     aria-label="Odebrat osobu"
                   >
                     ✕
@@ -208,7 +210,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
             type="button"
             onClick={addPerson}
             className="mt-3 text-sm underline"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--green)" }}
           >
             + Přidat další osobu
           </button>
@@ -217,13 +219,13 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
         {/* Arrival */}
         <div>
           <label className="block text-sm font-semibold mb-3" style={{ color: "var(--dark)" }}>
-            Termín příjezdu
+            Pro přespolní
           </label>
           <div className="space-y-2">
             {(
               [
-                { value: "friday", label: "Pátek s ubytováním (od 9. 10. 2026)" },
-                { value: "saturday", label: "Sobota na obřad (10. 10. 2026)" },
+                { value: "friday", label: "Přijedu v pátek" },
+                { value: "saturday", label: "Přijedu v sobotu na obřad" },
               ] as const
             ).map((opt) => (
               <label
@@ -236,7 +238,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
                   value={opt.value}
                   checked={arrival === opt.value}
                   onChange={() => setArrival(opt.value)}
-                  style={{ accentColor: "var(--gold)" }}
+                  style={{ accentColor: "var(--green)" }}
                 />
                 {opt.label}
               </label>
@@ -244,32 +246,32 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
           </div>
         </div>
 
+        {/* Song */}
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
+            Napište nám pár Vašich oblíbených písniček, na které si s námi rádi zatančíte a zazpíváte ❤️
+          </label>
+          <textarea
+            value={song}
+            onChange={(e) => setSong(e.target.value)}
+            rows={3}
+            className="w-full border rounded px-3 py-2 text-sm focus:outline-none resize-none"
+            style={{ borderColor: "var(--green-light)" }}
+          />
+        </div>
+
         {/* Note */}
         <div>
           <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
-            Poznámka pro organizátory (nepovinné)
+            Pokud byste nám ještě něco rádi vzkázali nebo upřesnili, tak prosíme sem
           </label>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={3}
+            placeholder="Pokud byste nám ještě něco rádi vzkázali nebo upřesnili, tak prosíme sem"
             className="w-full border rounded px-3 py-2 text-sm focus:outline-none resize-none"
-            style={{ borderColor: "var(--gold-light)" }}
-          />
-        </div>
-
-        {/* Song */}
-        <div>
-          <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
-            Oblíbená písnička pro DJ (nepovinné)
-          </label>
-          <input
-            type="text"
-            value={song}
-            onChange={(e) => setSong(e.target.value)}
-            placeholder="i dětská…"
-            className="w-full border rounded px-3 py-2 text-sm focus:outline-none"
-            style={{ borderColor: "var(--gold-light)" }}
+            style={{ borderColor: "var(--green-light)" }}
           />
         </div>
 
@@ -279,7 +281,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
           type="submit"
           disabled={submitting}
           className="w-full py-3 rounded font-semibold text-white transition-opacity disabled:opacity-50"
-          style={{ backgroundColor: "var(--gold)" }}
+          style={{ backgroundColor: "var(--green)" }}
         >
           {submitting ? "Odesílám..." : "Potvrdit účast →"}
         </button>
@@ -296,11 +298,11 @@ function PageShell({ children }: { children: React.ReactNode }) {
     >
       <div
         className="w-full max-w-lg bg-white rounded-xl shadow-sm border p-8"
-        style={{ borderColor: "var(--gold-light)" }}
+        style={{ borderColor: "var(--green-light)" }}
       >
         {children}
       </div>
-      <a href="/" className="mt-6 text-sm" style={{ color: "var(--gold)" }}>
+      <a href="/" className="mt-6 text-sm" style={{ color: "var(--green)" }}>
         ← Zpět na hlavní stránku
       </a>
     </div>

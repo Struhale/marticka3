@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --gold: #c9a84c;
-  --gold-light: #f0d88a;
+  --green: #5c7a5c;
+  --green-light: #a8c5a0;
+  --green-pale: #eef4ee;
   --cream: #fdf8f0;
   --dark: #2c2c2c;
 }
@@ -11,4 +12,5 @@ body {
   background-color: var(--cream);
   color: var(--dark);
   font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
 }
