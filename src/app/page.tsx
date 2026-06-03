@@ -142,7 +142,7 @@ export default function HomePage() {
         <section id="svedci">
           <SectionHeading>Svědci</SectionHeading>
           <p className="text-center text-sm mb-8" style={{ color: "#666" }}>
-            V případě dotazů nebo problémů v den svatby se obraťte na svědky.
+            Pokud nám budete chtít připravit překvapení, hru, zábavu, úkoly,.. Prosím s jakýmkoliv zásahem do harmonogramu svatby anebo v případě dotazů, problémů v den svatby se obraťte na naše svědky. Děkujeme! 
           </p>
           <div className="grid md:grid-cols-2 gap-8">
             {WITNESSES.map((w) => (

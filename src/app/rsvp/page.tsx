@@ -160,14 +160,18 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
         ← Zpět
       </button>
       <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--dark)" }}>
-        Přihlašovací formulář
+        Řekněte nám své „ANO“
       </h2>
+
+      <label className="block text-sm mb-3" style={{ color: "var(--dark)" }}>
+        Prosíme, nezapomeňte v dotazníku uvést všechny, kteří dorazí s vámi. Po vyplnění svých údajů stačí kliknout na tlačítko „Přidat další osobu“ a zadat partnera či děti. Díky tomu budeme mít správný přehled o počtu hostů i případných alergiích. 
+      </label>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* People — card per person */}
         <div>
           <label className="block text-sm font-semibold mb-3" style={{ color: "var(--dark)" }}>
-            Vaše jméno:
+            Kdo všechno dorazí?
           </label>
           <div className="space-y-4">
             {people.map((person, i) => (
@@ -178,7 +182,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
               >
                 <input
                   type="text"
-                  placeholder={i === 0 ? "Vaše jméno (povinné)" : "Jméno (nepovinné)"}
+                  placeholder={i === 0 ? "Vaše jméno" : "Jméno"}
                   value={person.name}
                   onChange={(e) => updatePerson(i, "name", e.target.value)}
                   required={i === 0}
@@ -186,7 +190,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
                   style={{ borderColor: "var(--green-light)" }}
                 />
                 <textarea
-                  placeholder="napište nám, co nejíte, na co máte alergii/intoleranci"
+                  placeholder="Napište nám, na co máte alergii/intoleranci/potravinové omezení"
                   value={person.allergies}
                   onChange={(e) => updatePerson(i, "allergies", e.target.value)}
                   rows={2}
