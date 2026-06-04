@@ -35,8 +35,8 @@ export function getAttendanceSummary(
   return {
     attending,
     notAttending,
-    attendingCount: attending.length,
-    notAttendingCount: notAttending.length,
+    attendingCount: attending.reduce((sum, s) => sum + Math.max(1, s.people.length), 0),
+    notAttendingCount: notAttending.reduce((sum, s) => sum + Math.max(1, s.people.length), 0),
   };
 }
 

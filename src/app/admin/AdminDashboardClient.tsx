@@ -81,7 +81,7 @@ export default function AdminDashboardClient({
           <StatCard label="Přijde" value={attendance.attendingCount} />
           <StatCard label="Nepřijde" value={attendance.notAttendingCount} />
           <StatCard label="Ubytování" value={accommodation.totalPeople} />
-          <StatCard label="Celkem odpovědí" value={submissions.length} />
+          <StatCard label="Celkem lidí" value={attendance.attendingCount + attendance.notAttendingCount} />
         </div>
 
         {/* Tabs */}
@@ -93,7 +93,7 @@ export default function AdminDashboardClient({
               className="px-4 py-2 rounded text-sm font-medium transition-colors"
               style={
                 activeTab === tab.key
-                  ? { backgroundColor: "var(--gold)", color: "#fff" }
+                  ? { backgroundColor: "var(--dark)", color: "#fff" }
                   : { backgroundColor: "#fff", color: "var(--gold)", border: "1px solid var(--gold-light)" }
               }
             >
@@ -174,7 +174,6 @@ function AttendanceTable({
       </thead>
       <tbody>
         {submissions.map((s) => {
-          const submitter = s.people.find((p) => p.is_submitter);
           const isEditing = editingId === s.id;
           return (
             <tr
@@ -183,12 +182,16 @@ function AttendanceTable({
               style={{ borderBottom: "1px solid #f5f0e8" }}
             >
               <Td>
-                <span className="font-medium">{submitter?.name ?? "—"}</span>
-                {s.people.length > 1 && (
-                  <span className="text-xs ml-1" style={{ color: "#888" }}>
-                    +{s.people.length - 1}
-                  </span>
-                )}
+                {s.people.length > 0
+                  ? s.people.map((p, i) => (
+                      <span key={p.id}>
+                        {i > 0 && ", "}
+                        <span style={p.is_submitter ? { fontWeight: 600 } : undefined}>
+                          {p.name}
+                        </span>
+                      </span>
+                    ))
+                  : <span style={{ color: "#888" }}>—</span>}
               </Td>
               <Td>
                 <span
@@ -294,10 +297,6 @@ function AccommodationTable({ accommodation }: { accommodation: AccommodationRes
   }
   return (
     <div className="space-y-4">
-      <p className="text-sm" style={{ color: "#666" }}>
-        Celkem osob s ubytováním:{" "}
-        <strong style={{ color: "var(--dark)" }}>{accommodation.totalPeople}</strong>
-      </p>
       <TableShell>
         <thead>
           <tr style={{ borderBottom: "1px solid var(--gold-light)" }}>

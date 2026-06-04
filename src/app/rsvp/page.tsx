@@ -10,34 +10,17 @@ interface PersonRow {
 
 type Arrival = "friday" | "saturday";
 
-type Step = "choice" | "attending-form";
+type Step = "choice" | "attending-form" | "not-attending-form";
 
 export default function RSVPPage() {
-  const router = useRouter();
   const [step, setStep] = useState<Step>("choice");
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleNotAttending() {
-    setSubmitting(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ attending: false }),
-      });
-      if (!res.ok) throw new Error();
-      const { id } = await res.json();
-      router.push(`/rsvp/potvrdi?id=${id}&attending=false`);
-    } catch {
-      setError("Něco se pokazilo. Zkuste to prosím znovu.");
-      setSubmitting(false);
-    }
-  }
 
   if (step === "attending-form") {
     return <AttendingForm onBack={() => setStep("choice")} />;
+  }
+
+  if (step === "not-attending-form") {
+    return <NotAttendingForm onBack={() => setStep("choice")} />;
   }
 
   return (
@@ -52,30 +35,182 @@ export default function RSVPPage() {
         Zúčastníte se naší svatby?
       </p>
 
-      {error && <p className="text-center text-red-600 mb-4 text-sm">{error}</p>}
-
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <button
           onClick={() => setStep("attending-form")}
-          disabled={submitting}
-          className="px-8 py-4 rounded font-semibold text-lg text-white transition-opacity disabled:opacity-50"
+          className="px-8 py-4 rounded font-semibold text-lg text-white shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95"
           style={{ backgroundColor: "var(--green)" }}
         >
           Přijdu 🎉
         </button>
         <button
-          onClick={handleNotAttending}
-          disabled={submitting}
-          className="px-8 py-4 rounded font-semibold text-lg border-2 transition-opacity disabled:opacity-50"
+          onClick={() => setStep("not-attending-form")}
+          className="px-8 py-4 rounded font-semibold text-lg border-2 transition-all duration-200 hover:scale-105 active:scale-95"
           style={{ borderColor: "var(--green)", color: "var(--green)" }}
         >
-          {submitting ? "Odesílám..." : "Nepřijdu"}
+          Nepřijdu
         </button>
       </div>
 
       <p className="text-center text-xs mt-8" style={{ color: "#aaa" }}>
         Termín pro potvrzení: 1. července 2026
       </p>
+    </PageShell>
+  );
+}
+
+function NotAttendingForm({ onBack }: { onBack: () => void }) {
+  const router = useRouter();
+  const [submitterName, setSubmitterName] = useState("");
+  const [others, setOthers] = useState<string[]>([]);
+  const [note, setNote] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function addOther() {
+    setOthers((prev) => [...prev, ""]);
+  }
+
+  function updateOther(index: number, value: string) {
+    setOthers((prev) => prev.map((v, i) => (i === index ? value : v)));
+  }
+
+  function removeOther(index: number) {
+    setOthers((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!submitterName.trim()) {
+      setError("Vyplňte prosím své jméno.");
+      return;
+    }
+
+    setSubmitting(true);
+    setError(null);
+
+    const allPeople = [
+      { name: submitterName.trim(), is_submitter: true },
+      ...others
+        .filter((n) => n.trim())
+        .map((n) => ({ name: n.trim(), is_submitter: false })),
+    ];
+
+    const payload = {
+      attending: false,
+      note: note.trim() || null,
+      people: allPeople,
+    };
+
+    try {
+      const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error();
+      const { id } = await res.json();
+      const names = allPeople.map((p) => encodeURIComponent(p.name)).join(",");
+      router.push(`/rsvp/potvrdi?id=${id}&attending=false&names=${names}`);
+    } catch {
+      setError("Něco se pokazilo. Zkuste to prosím znovu.");
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <PageShell>
+      <button
+        onClick={onBack}
+        className="text-sm mb-6 flex items-center gap-1"
+        style={{ color: "var(--green)" }}
+      >
+        ← Zpět
+      </button>
+      <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--dark)" }}>
+        Nevadí, vidíme se jindy
+      </h2>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Submitter name */}
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
+            Vaše jméno
+          </label>
+          <input
+            type="text"
+            placeholder="Jméno"
+            value={submitterName}
+            onChange={(e) => setSubmitterName(e.target.value)}
+            required
+            className="w-full border rounded px-3 py-2 text-sm focus:outline-none bg-white"
+            style={{ borderColor: "var(--green-light)" }}
+          />
+        </div>
+
+        {/* Additional people */}
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
+            Vyplňujete i za někoho dalšího?
+          </label>
+          <div className="space-y-2">
+            {others.map((name, i) => (
+              <div key={i} className="flex gap-2 items-center">
+                <input
+                  type="text"
+                  placeholder="Jméno"
+                  value={name}
+                  onChange={(e) => updateOther(i, e.target.value)}
+                  className="flex-1 border rounded px-3 py-2 text-sm focus:outline-none bg-white"
+                  style={{ borderColor: "var(--green-light)" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeOther(i)}
+                  className="text-sm text-red-400 hover:text-red-600"
+                  aria-label="Odebrat osobu"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={addOther}
+            className="mt-2 text-sm underline"
+            style={{ color: "var(--green)" }}
+          >
+            + Přidat další osobu
+          </button>
+        </div>
+
+        {/* Note */}
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
+            Vzkaz pro Martičku a Kubu (nepovinné)
+          </label>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            rows={3}
+            placeholder="Napište nám cokoliv..."
+            className="w-full border rounded px-3 py-2 text-sm focus:outline-none resize-none"
+            style={{ borderColor: "var(--green-light)" }}
+          />
+        </div>
+
+        {error && <p className="text-red-600 text-sm">{error}</p>}
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full py-3 rounded font-semibold text-white transition-opacity disabled:opacity-50"
+          style={{ backgroundColor: "var(--green)" }}
+        >
+          {submitting ? "Odesílám..." : "Potvrdit →"}
+        </button>
+      </form>
     </PageShell>
   );
 }
@@ -160,11 +295,11 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
         ← Zpět
       </button>
       <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--dark)" }}>
-        Řekněte nám své „ANO“
+        Řekněte nám své „ANO"
       </h2>
 
       <label className="block text-sm mb-3" style={{ color: "var(--dark)" }}>
-        Prosíme, nezapomeňte v dotazníku uvést všechny, kteří dorazí s vámi. Po vyplnění svých údajů stačí kliknout na tlačítko „Přidat další osobu“ a zadat partnera či děti. Díky tomu budeme mít správný přehled o počtu hostů i případných alergiích. 
+        Prosíme, nezapomeňte v dotazníku uvést všechny, kteří dorazí s vámi. Po vyplnění svých údajů stačí kliknout na tlačítko „Přidat další osobu" a zadat partnera či děti. Díky tomu budeme mít správný přehled o počtu hostů i případných alergiích.
       </label>
 
       <form onSubmit={handleSubmit} className="space-y-6">

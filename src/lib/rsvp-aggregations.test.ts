@@ -53,6 +53,34 @@ describe("getAttendanceSummary", () => {
     expect(result.attendingCount).toBe(0);
     expect(result.notAttendingCount).toBe(0);
   });
+
+  it("counts people within each submission, not just submissions", () => {
+    const submissions = [
+      makeSubmission({
+        id: "1",
+        attending: true,
+        people: [makePerson("Jan", null, true), makePerson("Jana"), makePerson("Jiří")],
+      }),
+      makeSubmission({
+        id: "2",
+        attending: false,
+        people: [makePerson("Petr", null, true), makePerson("Petra")],
+      }),
+    ];
+    const result = getAttendanceSummary(submissions);
+    expect(result.attendingCount).toBe(3);
+    expect(result.notAttendingCount).toBe(2);
+  });
+
+  it("counts legacy submissions with no people as 1 person each", () => {
+    const submissions = [
+      makeSubmission({ id: "1", attending: true, people: [] }),
+      makeSubmission({ id: "2", attending: false, people: [] }),
+    ];
+    const result = getAttendanceSummary(submissions);
+    expect(result.attendingCount).toBe(1);
+    expect(result.notAttendingCount).toBe(1);
+  });
 });
 
 describe("getPeopleWithAllergies", () => {

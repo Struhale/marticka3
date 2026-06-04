@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         : null,
     note: typeof input.note === "string" ? input.note : null,
     song: typeof input.song === "string" ? input.song : null,
-    people: input.attending
+    people: Array.isArray(input.people)
       ? (input.people as { name: string; allergies?: string | null; is_submitter: boolean }[])
       : [],
   };

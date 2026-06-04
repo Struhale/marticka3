@@ -31,11 +31,11 @@ export default function ConfirmationContent() {
         </h1>
         <p style={{ color: "#666" }}>
           {attending
-            ? "Vaše přihlášení bylo úspěšně odesláno. Budeme se těšit!"
+            ? "Vaše odpovědi jsme úspešně přijali. Budeme se těšit! V případě jakkýchkoliv změn kontaktujte svědky."
             : "Mrzí nás, že se nemůžete zúčastnit. Děkujeme, že jste nám dali vědět."}
         </p>
 
-        {attending && (names.length > 0 || arrival) && (
+        {(names.length > 0 || arrival) && (
           <div
             className="mt-6 pt-6 border-t text-left text-sm space-y-3"
             style={{ borderColor: "var(--gold-light)" }}
@@ -43,7 +43,7 @@ export default function ConfirmationContent() {
             {names.length > 0 && (
               <div>
                 <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
-                  Účastníci
+                  {attending ? "Odpověděli jste za" : "Za koho jste odpověděli"}
                 </p>
                 <ul className="space-y-1" style={{ color: "#444" }}>
                   {names.map((name) => (
@@ -55,7 +55,7 @@ export default function ConfirmationContent() {
             {arrival && ARRIVAL_LABELS[arrival] && (
               <div>
                 <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
-                  Termín příjezdu
+                  Přijedete v
                 </p>
                 <p style={{ color: "#444" }}>{ARRIVAL_LABELS[arrival]}</p>
               </div>
