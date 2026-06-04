@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { href: "#kdy-kde", label: "Kdy & Kde" },
   { href: "#svedci", label: "Svědci" },
   { href: "#ubytovani", label: "Ubytování" },
+  { href: "#dress-code", label: "Dress Code" },
   { href: "#dary", label: "Dary" },
   { href: "#rsvp", label: "Potvrzení účasti" },
 ];

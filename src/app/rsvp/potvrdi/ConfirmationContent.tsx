@@ -3,8 +3,8 @@
 import { useSearchParams } from "next/navigation";
 
 const ARRIVAL_LABELS: Record<string, string> = {
-  friday: "Pátek s ubytováním (od 9. 10. 2026)",
-  saturday: "Sobota na obřad (10. 10. 2026)",
+  two_nights: "Ubytuju se v pátek i sobotu",
+  one_night: "Ubytuju se jen v sobotu",
 };
 
 export default function ConfirmationContent() {
@@ -31,7 +31,7 @@ export default function ConfirmationContent() {
         </h1>
         <p style={{ color: "#666" }}>
           {attending
-            ? "Vaše odpovědi jsme úspešně přijali. Budeme se těšit! V případě jakkýchkoliv změn kontaktujte svědky."
+            ? "Děkujeme, odpovědi jsme úspěšně uložili! Moc se na vás těšíme. Kdyby se u vás cokoliv změnilo, dejte nám prosím vědět."
             : "Mrzí nás, že se nemůžete zúčastnit. Děkujeme, že jste nám dali vědět."}
         </p>
 
@@ -55,7 +55,7 @@ export default function ConfirmationContent() {
             {arrival && ARRIVAL_LABELS[arrival] && (
               <div>
                 <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
-                  Přijedete v
+                  Ubytování
                 </p>
                 <p style={{ color: "#444" }}>{ARRIVAL_LABELS[arrival]}</p>
               </div>

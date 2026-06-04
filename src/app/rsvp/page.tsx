@@ -8,7 +8,7 @@ interface PersonRow {
   allergies: string;
 }
 
-type Arrival = "friday" | "saturday";
+type Arrival = "none" | "two_nights" | "one_night";
 
 type Step = "choice" | "attending-form" | "not-attending-form";
 
@@ -246,7 +246,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
       return;
     }
     if (!arrival) {
-      setError("Zvolte prosím termín příjezdu.");
+      setError("Zvolte prosím možnost ubytování.");
       return;
     }
 
@@ -358,13 +358,14 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
         {/* Arrival */}
         <div>
           <label className="block text-sm font-semibold mb-3" style={{ color: "var(--dark)" }}>
-            Pro přespolní
+            Ubytování na Aréně
           </label>
           <div className="space-y-2">
             {(
               [
-                { value: "friday", label: "Přijedu v pátek" },
-                { value: "saturday", label: "Přijedu v sobotu na obřad" },
+                { value: "none", label: "Nevyužiju" },
+                { value: "two_nights", label: "Ubytuju se v pátek i sobotu" },
+                { value: "one_night", label: "Ubytuju se jen v sobotu" },
               ] as const
             ).map((opt) => (
               <label

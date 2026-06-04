@@ -85,9 +85,8 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto">
           <SectionHeading>Svědci</SectionHeading>
           <p className="text-center text-sm mb-8" style={{ color: "#666" }}>
-            Pokud nám budete chtít připravit překvapení, hru, zábavu, úkoly,.. Prosím s
-            jakýmkoliv zásahem do harmonogramu svatby anebo v případě dotazů, problémů v
-            den svatby se obraťte na naše svědky. Děkujeme!
+            Pokud nám budete chtít připravit překvapení, hru, zábavu, úkoly,.. Prosíme s
+            jakýmkoliv zásahem do harmonogramu svatby anebo v případě dotazů se obraťte na naše svědky. Děkujeme!
           </p>
           <div className="grid md:grid-cols-2 gap-8">
             {WITNESSES.map((w) => (
@@ -156,9 +155,8 @@ export default function HomePage() {
             </p>
             <p className="mb-4 leading-relaxed" style={{ color: "#444" }}>
               Ubytování pro rodinu a kamarády (z Prahy, Mostu, Litoměřic, Trenčína), kteří
-              nemají azyl na Valašsku, je zajištěno se snídaní. Ubytování je zarezervováno
-              od pátku do neděle. Prosíme dejte nám níže v dotazníku vědět, jestli přijedete
-              už v pátek nebo až v sobotu.
+              nemají azyl na Valašsku, je i se snídaní zarezervováno
+              od pátku do neděle. Prosíme dejte nám níže v dotazníku vědět, jestli přijedete v pátek nebo sobotu.
             </p>
             <p className="mb-5 leading-relaxed" style={{ color: "#444" }}>
               Odvoz na obřad i zpět je zajištěn — stačí jen přijet.
@@ -174,6 +172,21 @@ export default function HomePage() {
                 Navigovat na hotel →
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Dress Code — cream background */}
+      <section id="dress-code" className="py-20 px-4">
+        <div className="max-w-3xl mx-auto">
+          <SectionHeading>Dress Code</SectionHeading>
+          <div className="text-center max-w-md mx-auto space-y-3">
+            <p style={{ color: "#444" }}>
+              Těšíme se na vás ve společenském oblečení, ve kterém se vám bude dobře slavit i tancovat až do rána.        
+            </p>
+            <p className="text-sm" style={{ color: "#888" }}>
+              Prosba na dámy – bílou barvu prosím nechte vyhrazenou pro nevěstu, ať v tom nemá ženich zmatek. Jinak jsou barvy úplně na vás!
+            </p>
           </div>
         </div>
       </section>
