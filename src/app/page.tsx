@@ -32,6 +32,7 @@ export default function HomePage() {
           src="/svatebni-par.jpg"
           alt="Marta a Jakub"
           fill
+          sizes="100vw"
           priority
           style={{ objectFit: "cover", objectPosition: "center 18%" }}
         />
@@ -103,6 +104,7 @@ export default function HomePage() {
                     src={w.photo}
                     alt={w.name}
                     fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover"
                     style={{ objectPosition: "center 20%" }}
                   />
