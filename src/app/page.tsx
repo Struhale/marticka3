@@ -10,14 +10,14 @@ const WITNESSES = [
   {
     name: "Martin Vadlejch",
     role: "svědek za stranu ženicha",
-    phone: "+420 XXX XXX XXX",
-    initials: "M",
+    phone: "+420 603 943 000",
+    photo: "/martin.jpg",
   },
   {
     name: "Aleš Struhař",
     role: "svědek za stranu nevěsty",
-    phone: "+420 XXX XXX XXX",
-    initials: "A",
+    phone: "+420 778 536 342",
+    photo: "/alda.jpeg",
   },
 ];
 
@@ -29,11 +29,11 @@ export default function HomePage() {
       {/* Hero — full viewport, photo background */}
       <section className="relative" style={{ height: "100svh" }}>
         <Image
-          src="/svatebni-par.jpeg"
+          src="/svatebni-par.jpg"
           alt="Marta a Jakub"
           fill
           priority
-          style={{ objectFit: "cover", objectPosition: "center 20%" }}
+          style={{ objectFit: "cover", objectPosition: "center 18%" }}
         />
         <div
           className="absolute inset-0"
@@ -44,15 +44,11 @@ export default function HomePage() {
         />
         <div className="absolute bottom-0 left-0 right-0 text-center pb-16 px-4">
           <h1
-            className="text-7xl md:text-9xl text-white mb-3"
+            className="text-6xl md:text-8xl text-white mb-3"
             style={{ fontFamily: "var(--font-script)" }}
           >
             Marta & Jakub
           </h1>
-          <p className="text-xl text-white">10. října 2026</p>
-          <p className="text-lg text-white mt-1 opacity-90">
-            Restaurace u Kollerů, Poteč
-          </p>
         </div>
       </section>
 
@@ -96,32 +92,34 @@ export default function HomePage() {
             {WITNESSES.map((w) => (
               <div
                 key={w.name}
-                className="text-center p-6 rounded-lg border"
+                className="rounded-lg border overflow-hidden"
                 style={{
                   borderColor: "var(--green-light)",
                   backgroundColor: "var(--green-pale)",
                 }}
               >
-                <div
-                  className="mx-auto mb-4 w-24 h-24 rounded-full border-2 flex items-center justify-center text-3xl font-bold text-white"
-                  style={{
-                    borderColor: "var(--green)",
-                    backgroundColor: "var(--green)",
-                  }}
-                >
-                  {w.initials}
+                <div className="relative w-full" style={{ height: "200px" }}>
+                  <Image
+                    src={w.photo}
+                    alt={w.name}
+                    fill
+                    className="object-cover"
+                    style={{ objectPosition: "center 20%" }}
+                  />
                 </div>
-                <p className="font-bold text-lg">{w.name}</p>
-                <p className="text-sm mb-2" style={{ color: "var(--green)" }}>
-                  {w.role}
-                </p>
-                <a
-                  href={`tel:${w.phone.replace(/\s/g, "")}`}
-                  className="text-sm font-mono"
-                  style={{ color: "#444" }}
-                >
-                  {w.phone}
-                </a>
+                <div className="text-center p-5">
+                  <p className="font-bold text-lg">{w.name}</p>
+                  <p className="text-sm mb-2" style={{ color: "var(--green)" }}>
+                    {w.role}
+                  </p>
+                  <a
+                    href={`tel:${w.phone.replace(/\s/g, "")}`}
+                    className="text-sm font-mono"
+                    style={{ color: "#444" }}
+                  >
+                    {w.phone}
+                  </a>
+                </div>
               </div>
             ))}
           </div>

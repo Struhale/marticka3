@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { href: "#svedci", label: "Svědci" },
   { href: "#ubytovani", label: "Ubytování" },
   { href: "#dary", label: "Dary" },
-  { href: "#rsvp", label: "RSVP" },
+  { href: "#rsvp", label: "Potvrzení účasti" },
 ];
 
 export default function Nav() {
