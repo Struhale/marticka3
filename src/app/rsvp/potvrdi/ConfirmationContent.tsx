@@ -12,6 +12,8 @@ export default function ConfirmationContent() {
   const attending = params.get("attending") === "true";
   const arrival = params.get("arrival") ?? "";
   const namesParam = params.get("names") ?? "";
+  const song = params.get("song") ?? "";
+  const note = params.get("note") ?? "";
   const names = namesParam
     ? namesParam.split(",").map((n) => decodeURIComponent(n))
     : [];
@@ -35,7 +37,7 @@ export default function ConfirmationContent() {
             : "Mrzí nás, že se nemůžete zúčastnit. Děkujeme, že jste nám dali vědět."}
         </p>
 
-        {(names.length > 0 || arrival) && (
+        {(names.length > 0 || arrival || song || note) && (
           <div
             className="mt-6 pt-6 border-t text-left text-sm space-y-3"
             style={{ borderColor: "var(--gold-light)" }}
@@ -43,7 +45,7 @@ export default function ConfirmationContent() {
             {names.length > 0 && (
               <div>
                 <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
-                  {attending ? "Odpověděli jste za" : "Za koho jste odpověděli"}
+                  {attending ? "Odpověď jste odeslali za" : "Odpověď jste odeslali za"}
                 </p>
                 <ul className="space-y-1" style={{ color: "#444" }}>
                   {names.map((name) => (
@@ -58,6 +60,22 @@ export default function ConfirmationContent() {
                   Ubytování
                 </p>
                 <p style={{ color: "#444" }}>{ARRIVAL_LABELS[arrival]}</p>
+              </div>
+            )}
+            {song && (
+              <div>
+                <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
+                  Písničky
+                </p>
+                <p style={{ color: "#444", whiteSpace: "pre-wrap" }}>{song}</p>
+              </div>
+            )}
+            {note && (
+              <div>
+                <p className="font-semibold mb-1" style={{ color: "var(--dark)" }}>
+                  Vzkaz
+                </p>
+                <p style={{ color: "#444", whiteSpace: "pre-wrap" }}>{note}</p>
               </div>
             )}
           </div>

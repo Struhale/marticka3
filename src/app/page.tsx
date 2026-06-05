@@ -8,16 +8,16 @@ const HOTEL_MAPS =
 
 const WITNESSES = [
   {
-    name: "Martin Vadlejch",
-    role: "svědek za stranu ženicha",
-    phone: "+420 603 943 000",
-    photo: "/martin.jpg",
-  },
-  {
     name: "Aleš Struhař",
     role: "svědek za stranu nevěsty",
     phone: "+420 778 536 342",
     photo: "/alda.jpeg",
+  },
+  {
+    name: "Martin Vadlejch",
+    role: "svědek za stranu ženicha",
+    phone: "+420 603 943 000",
+    photo: "/martin.jpg",
   },
 ];
 

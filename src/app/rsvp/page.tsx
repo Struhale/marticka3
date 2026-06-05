@@ -111,7 +111,8 @@ function NotAttendingForm({ onBack }: { onBack: () => void }) {
       if (!res.ok) throw new Error();
       const { id } = await res.json();
       const names = allPeople.map((p) => encodeURIComponent(p.name)).join(",");
-      router.push(`/rsvp/potvrdi?id=${id}&attending=false&names=${names}`);
+      const noteParam = note.trim() ? `&note=${encodeURIComponent(note.trim())}` : "";
+      router.push(`/rsvp/potvrdi?id=${id}&attending=false&names=${names}${noteParam}`);
     } catch {
       setError("Něco se pokazilo. Zkuste to prosím znovu.");
       setSubmitting(false);
@@ -127,9 +128,12 @@ function NotAttendingForm({ onBack }: { onBack: () => void }) {
       >
         ← Zpět
       </button>
-      <h2 className="text-2xl font-bold mb-6" style={{ color: "var(--dark)" }}>
-        Nevadí, vidíme se jindy
+      <h2 className="text-2xl font-bold mb-2" style={{ color: "var(--dark)" }}>
+        Moc nás to mrzí
       </h2>
+      <p className="text-sm mb-6" style={{ color: "#666" }}>
+        Věříme, že se brzy uvidíme při jiné příležitosti.
+      </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Submitter name */}
@@ -201,6 +205,10 @@ function NotAttendingForm({ onBack }: { onBack: () => void }) {
         </div>
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
+
+        <p className="text-center text-xs" style={{ color: "#aaa" }}>
+          Termín pro potvrzení: 1. července 2026
+        </p>
 
         <button
           type="submit"
@@ -276,8 +284,10 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
       if (!res.ok) throw new Error();
       const { id } = await res.json();
       const names = payload.people.map((p) => encodeURIComponent(p.name)).join(",");
+      const songParam = song.trim() ? `&song=${encodeURIComponent(song.trim())}` : "";
+      const noteParam = note.trim() ? `&note=${encodeURIComponent(note.trim())}` : "";
       router.push(
-        `/rsvp/potvrdi?id=${id}&attending=true&arrival=${arrival}&names=${names}`
+        `/rsvp/potvrdi?id=${id}&attending=true&arrival=${arrival}&names=${names}${songParam}${noteParam}`
       );
     } catch {
       setError("Něco se pokazilo. Zkuste to prosím znovu.");
@@ -357,9 +367,12 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
 
         {/* Arrival */}
         <div>
-          <label className="block text-sm font-semibold mb-3" style={{ color: "var(--dark)" }}>
-            Ubytování na Aréně
+          <label className="block text-sm font-semibold mb-1" style={{ color: "var(--dark)" }}>
+            Ubytování na Aréně (pro přespolní)
           </label>
+          <p className="text-xs mb-3" style={{ color: "#888" }}>
+            Hotel Aréna Brumov-Bylnice — snídaně a parkování zdarma, dopravu na místo konání zajistíme.
+          </p>
           <div className="space-y-2">
             {(
               [
@@ -395,6 +408,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
             value={song}
             onChange={(e) => setSong(e.target.value)}
             rows={3}
+            placeholder="Vypsaná fixa – Dezolát, ..."
             className="w-full border rounded px-3 py-2 text-sm focus:outline-none resize-none"
             style={{ borderColor: "var(--green-light)" }}
           />
@@ -403,19 +417,22 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
         {/* Note */}
         <div>
           <label className="block text-sm font-semibold mb-2" style={{ color: "var(--dark)" }}>
-            Pokud byste nám ještě něco rádi vzkázali nebo upřesnili, tak prosíme sem
+            Pokud nám chcete ještě něco vzkázat nebo upřesnit, napište nám sem:
           </label>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={3}
-            placeholder="Pokud byste nám ještě něco rádi vzkázali nebo upřesnili, tak prosíme sem"
             className="w-full border rounded px-3 py-2 text-sm focus:outline-none resize-none"
             style={{ borderColor: "var(--green-light)" }}
           />
         </div>
 
         {error && <p className="text-red-600 text-sm">{error}</p>}
+
+        <p className="text-center text-xs" style={{ color: "#aaa" }}>
+          Termín pro potvrzení: 1. července 2026
+        </p>
 
         <button
           type="submit"
