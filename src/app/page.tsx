@@ -11,7 +11,8 @@ const WITNESSES = [
     name: "Aleš Struhař",
     role: "svědek za stranu nevěsty",
     phone: "+420 778 536 342",
-    photo: "/alda.jpeg",
+    photo: "/alda.jpg",
+    photoPosition: "center 10%",
   },
   {
     name: "Martin Vadlejch",
@@ -64,8 +65,8 @@ export default function HomePage() {
           <div className="text-center space-y-3 text-white">
             <p className="text-xl font-semibold">10. října 2026, 11:00</p>
             <p className="text-lg">Restaurace u Kollerů</p>
-            <p className="opacity-80">Poteč 68, Valašské Klobouky 766 01</p>
-            <p className="text-sm opacity-70">
+            <p className="text-lg">Poteč 68, Valašské Klobouky 766 01</p>
+            <p className="text-sm opacity-80">
               Celý svatební den probíhá na jednom místě.
             </p>
             <a
@@ -105,7 +106,7 @@ export default function HomePage() {
                     fill
                     sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover"
-                    style={{ objectPosition: "center 20%" }}
+                    style={{ objectPosition: w.photoPosition ?? "center 20%" }}
                   />
                 </div>
                 <div className="text-center p-5">
