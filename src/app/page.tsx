@@ -160,7 +160,7 @@ export default function HomePage() {
               od pátku do neděle. Prosíme dejte nám níže v dotazníku vědět, jestli přijedete v pátek nebo sobotu.
             </p>
             <p className="mb-5 leading-relaxed" style={{ color: "#444" }}>
-              Odvoz na obřad i zpět je zajištěn — stačí jen přijet.
+              Odvoz na obřad i zpět na ubytování je zajištěn.
             </p>
             <div className="text-center">
               <a
