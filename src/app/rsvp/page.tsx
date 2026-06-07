@@ -335,7 +335,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
                   style={{ borderColor: "var(--green-light)" }}
                 />
                 <textarea
-                  placeholder="Napište nám, na co máte potravinovou alergii/intoleranci/omezení"
+                  placeholder="Napište nám vaši potravinovou alergii/intoleranci/omezení"
                   value={person.allergies}
                   onChange={(e) => updatePerson(i, "allergies", e.target.value)}
                   rows={2}
