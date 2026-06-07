@@ -206,10 +206,12 @@ function AttendanceTable({
                 </span>
               </Td>
               <Td>
-                {s.arrival === "friday"
-                  ? "Pátek"
-                  : s.arrival === "saturday"
-                  ? "Sobota"
+                {s.arrival === "two_nights"
+                  ? "Pátek i sobota"
+                  : s.arrival === "one_night"
+                  ? "Jen sobota"
+                  : s.arrival === "none"
+                  ? "Nevyužije"
                   : "—"}
               </Td>
               <Td>
@@ -293,15 +295,20 @@ function AllergiesTable({ allergies }: { allergies: PersonWithAllergy[] }) {
 
 function AccommodationTable({ accommodation }: { accommodation: AccommodationResult }) {
   if (accommodation.groups.length === 0) {
-    return <Empty text="Nikdo zatím nezvolil ubytování v pátek." />;
+    return <Empty text="Nikdo zatím nezvolil ubytování." />;
   }
   return (
     <div className="space-y-4">
+      <div className="flex gap-4 flex-wrap">
+        <StatCard label="Pátek i sobota" value={accommodation.twoNightsCount} />
+        <StatCard label="Jen sobota" value={accommodation.oneNightCount} />
+      </div>
       <TableShell>
         <thead>
           <tr style={{ borderBottom: "1px solid var(--gold-light)" }}>
             <Th>Skupina (vyplňující)</Th>
             <Th>Členové skupiny</Th>
+            <Th>Ubytování</Th>
             <Th>Potravinové alergie</Th>
           </tr>
         </thead>
@@ -314,6 +321,9 @@ function AccommodationTable({ accommodation }: { accommodation: AccommodationRes
             >
               <Td className="font-medium">{g.submitterName}</Td>
               <Td>{g.people.map((p) => p.name).join(", ")}</Td>
+              <Td>
+                {g.arrival === "two_nights" ? "Pátek i sobota" : "Jen sobota"}
+              </Td>
               <Td>
                 {g.people
                   .filter((p) => p.allergies)

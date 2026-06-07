@@ -12,7 +12,7 @@ function makeSubmission(overrides: Partial<Submission> = {}): Submission {
     id: "sub-1",
     created_at: "2026-05-31T00:00:00Z",
     attending: true,
-    arrival: "saturday",
+    arrival: "one_night",
     note: null,
     song: null,
     people: [],
@@ -112,33 +112,37 @@ describe("getPeopleWithAllergies", () => {
 });
 
 describe("getAccommodationGroups", () => {
-  it("includes only friday-arrival attending groups", () => {
+  it("includes only attending groups that chose accommodation", () => {
     const submissions = [
       makeSubmission({
-        id: "fri",
+        id: "two",
         attending: true,
-        arrival: "friday",
+        arrival: "two_nights",
         people: [makePerson("Jan", null, true), makePerson("Jana")],
       }),
       makeSubmission({
-        id: "sat",
+        id: "one",
         attending: true,
-        arrival: "saturday",
+        arrival: "one_night",
         people: [makePerson("Petr", null, true)],
       }),
+      makeSubmission({ id: "none", attending: true, arrival: "none" }),
       makeSubmission({ id: "no", attending: false, arrival: null }),
     ];
-    const { groups, totalPeople } = getAccommodationGroups(submissions);
-    expect(groups).toHaveLength(1);
-    expect(groups[0].submissionId).toBe("fri");
-    expect(totalPeople).toBe(2);
+    const { groups, totalPeople, twoNightsCount, oneNightCount } =
+      getAccommodationGroups(submissions);
+    expect(groups).toHaveLength(2);
+    expect(groups.map((g) => g.submissionId)).toEqual(["two", "one"]);
+    expect(totalPeople).toBe(3);
+    expect(twoNightsCount).toBe(2);
+    expect(oneNightCount).toBe(1);
   });
 
   it("expands all group members into the people list", () => {
     const submissions = [
       makeSubmission({
         attending: true,
-        arrival: "friday",
+        arrival: "two_nights",
         people: [
           makePerson("Submitter", null, true),
           makePerson("Guest1"),
@@ -152,9 +156,9 @@ describe("getAccommodationGroups", () => {
     expect(groups[0].submitterName).toBe("Submitter");
   });
 
-  it("returns zero totalPeople when no friday arrivals", () => {
+  it("returns zero totalPeople when no one chose accommodation", () => {
     const submissions = [
-      makeSubmission({ attending: true, arrival: "saturday" }),
+      makeSubmission({ attending: true, arrival: "none" }),
     ];
     const { groups, totalPeople } = getAccommodationGroups(submissions);
     expect(groups).toHaveLength(0);

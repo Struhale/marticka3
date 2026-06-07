@@ -44,7 +44,9 @@ export async function POST(req: NextRequest) {
   const data: SubmissionInput = {
     attending: input.attending,
     arrival:
-      input.arrival === "friday" || input.arrival === "saturday"
+      input.arrival === "none" ||
+      input.arrival === "two_nights" ||
+      input.arrival === "one_night"
         ? input.arrival
         : null,
     note: typeof input.note === "string" ? input.note : null,

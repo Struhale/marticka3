@@ -1,7 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { supabase as defaultSupabase } from "./supabase";
 
-export type Arrival = "friday" | "saturday";
+export type Arrival = "none" | "two_nights" | "one_night";
 
 export interface PersonInput {
   name: string;

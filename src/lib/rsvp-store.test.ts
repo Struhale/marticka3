@@ -37,7 +37,7 @@ const SUBMISSION_ROW = {
   id: "sub-1",
   created_at: "2026-05-31T00:00:00Z",
   attending: true,
-  arrival: "friday" as const,
+  arrival: "two_nights" as const,
   note: null,
   song: null,
 };
@@ -89,7 +89,7 @@ describe("RSVPStore.createSubmission", () => {
     const store = createRSVPStore(mockDb);
     const input: SubmissionInput = {
       attending: true,
-      arrival: "friday",
+      arrival: "two_nights",
       people: [
         { name: "Jan Novák", allergies: "laktóza", is_submitter: true },
         { name: "Jana Nováková", allergies: null, is_submitter: false },
