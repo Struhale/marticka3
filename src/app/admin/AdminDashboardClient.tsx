@@ -143,18 +143,20 @@ function AttendanceTable({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editNote, setEditNote] = useState("");
   const [editSong, setEditSong] = useState("");
+  const [editArrival, setEditArrival] = useState<Submission["arrival"]>(null);
 
   function startEdit(s: Submission) {
     setEditingId(s.id);
     setEditNote(s.note ?? "");
     setEditSong(s.song ?? "");
+    setEditArrival(s.arrival);
   }
 
   async function saveEdit(id: string) {
     await fetch(`/api/admin/submissions/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ note: editNote || null, song: editSong || null }),
+      body: JSON.stringify({ note: editNote || null, song: editSong || null, arrival: editArrival }),
     });
     setEditingId(null);
     router.refresh();
@@ -206,13 +208,29 @@ function AttendanceTable({
                 </span>
               </Td>
               <Td>
-                {s.arrival === "two_nights"
-                  ? "Pátek i sobota"
-                  : s.arrival === "one_night"
-                  ? "Jen sobota"
-                  : s.arrival === "none"
-                  ? "Nevyužije"
-                  : "—"}
+                {isEditing ? (
+                  <select
+                    value={editArrival ?? ""}
+                    onChange={(e) =>
+                      setEditArrival((e.target.value || null) as Submission["arrival"])
+                    }
+                    className="border rounded px-2 py-1 text-sm"
+                    style={{ borderColor: "var(--gold-light)" }}
+                  >
+                    <option value="">—</option>
+                    <option value="two_nights">Pátek i sobota</option>
+                    <option value="one_night">Jen sobota</option>
+                    <option value="none">Nevyužije</option>
+                  </select>
+                ) : s.arrival === "two_nights" ? (
+                  "Pátek i sobota"
+                ) : s.arrival === "one_night" ? (
+                  "Jen sobota"
+                ) : s.arrival === "none" ? (
+                  "Nevyužije"
+                ) : (
+                  "—"
+                )}
               </Td>
               <Td>
                 {isEditing ? (

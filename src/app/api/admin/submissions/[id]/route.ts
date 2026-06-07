@@ -9,6 +9,16 @@ export async function PATCH(
   const body = await req.json().catch(() => null);
   if (!body) return NextResponse.json({ error: "Invalid body" }, { status: 400 });
 
+  if (
+    "arrival" in body &&
+    body.arrival !== null &&
+    body.arrival !== "none" &&
+    body.arrival !== "two_nights" &&
+    body.arrival !== "one_night"
+  ) {
+    return NextResponse.json({ error: "Invalid arrival value" }, { status: 400 });
+  }
+
   try {
     await RSVPStore.updateSubmission(id, body);
     return NextResponse.json({ ok: true });
