@@ -43,7 +43,7 @@ export default function AdminDashboardClient({
 
   const TABS = [
     { key: "attendance" as const, label: `Přijdu/Nepřijdu (${submissions.length})` },
-    { key: "allergies" as const, label: `Alergie (${allergies.length})` },
+    { key: "allergies" as const, label: `Potravinové alergie (${allergies.length})` },
     {
       key: "accommodation" as const,
       label: `Ubytování (${accommodation.totalPeople})`,
@@ -265,14 +265,14 @@ function AttendanceTable({
 
 function AllergiesTable({ allergies }: { allergies: PersonWithAllergy[] }) {
   if (allergies.length === 0) {
-    return <Empty text="Žádné alergie nebyly nahlášeny." />;
+    return <Empty text="Žádné potravinové alergie nebyly nahlášeny." />;
   }
   return (
     <TableShell>
       <thead>
         <tr style={{ borderBottom: "1px solid var(--gold-light)" }}>
           <Th>Jméno</Th>
-          <Th>Alergie / intolerance</Th>
+          <Th>Potravinové alergie / intolerance</Th>
         </tr>
       </thead>
       <tbody>
@@ -302,7 +302,7 @@ function AccommodationTable({ accommodation }: { accommodation: AccommodationRes
           <tr style={{ borderBottom: "1px solid var(--gold-light)" }}>
             <Th>Skupina (vyplňující)</Th>
             <Th>Členové skupiny</Th>
-            <Th>Alergie</Th>
+            <Th>Potravinové alergie</Th>
           </tr>
         </thead>
         <tbody>

@@ -309,7 +309,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
       </h2>
 
       <label className="block text-sm mb-3" style={{ color: "var(--dark)" }}>
-        Prosíme, nezapomeňte v dotazníku uvést všechny, kteří dorazí s vámi. Po vyplnění svých údajů stačí kliknout na tlačítko „Přidat další osobu" a zadat partnera či děti. Díky tomu budeme mít správný přehled o počtu hostů i případných alergiích.
+        Prosíme, nezapomeňte v dotazníku uvést všechny, kteří dorazí s vámi. Po vyplnění svých údajů stačí kliknout na tlačítko „Přidat další osobu" a zadat partnera či děti. Díky tomu budeme mít správný přehled o počtu hostů i případných potravinových alergiích.
       </label>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -335,7 +335,7 @@ function AttendingForm({ onBack }: { onBack: () => void }) {
                   style={{ borderColor: "var(--green-light)" }}
                 />
                 <textarea
-                  placeholder="Napište nám, na co máte alergii/intoleranci/potravinové omezení"
+                  placeholder="Napište nám, na co máte potravinovou alergii/intoleranci/omezení"
                   value={person.allergies}
                   onChange={(e) => updatePerson(i, "allergies", e.target.value)}
                   rows={2}

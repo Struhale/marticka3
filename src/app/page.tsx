@@ -19,6 +19,7 @@ const WITNESSES = [
     role: "svědek za stranu ženicha",
     phone: "+420 603 943 000",
     photo: "/martin.jpg",
+    photoPosition: "center 10%",
   },
 ];
 
